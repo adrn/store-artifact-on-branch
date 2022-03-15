@@ -27,14 +27,23 @@ jobs:
     name: Share the artifact
     needs: run-the-stuff
     steps:
-       - uses: jwalton/gh-find-current-pr@v1
-         id: findPR
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPR
 
       - name: Make a temporary branch
         run: |
           echo "Your PR is ${{ steps.findPR.outputs.pr }}"
           git checkout --orphan pr-${{ steps.findPR.outputs.pr }}
           git rm --cached $(git ls-files)
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: run-the-stuff
+          pr: ${{github.event.pull_request.number}}
 
       - uses: EndBug/add-and-commit@v9
         with:
