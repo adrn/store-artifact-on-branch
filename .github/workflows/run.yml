@@ -25,7 +25,7 @@ jobs:
   share:
     runs-on: ubuntu-latest
     name: Share the artifact
-    needs: run-the-stuff
+    needs: "run-the-stuff"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
