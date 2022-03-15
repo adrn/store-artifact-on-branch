@@ -42,7 +42,7 @@ jobs:
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: run.yml
+          workflow: run-the-stuff
           pr: ${{github.event.pull_request.number}}
 
       - uses: EndBug/add-and-commit@v9
