@@ -25,13 +25,13 @@ jobs:
   share:
     runs-on: ubuntu-latest
     name: Share the artifact
-    needs: "run-the-stuff"
+    needs: run-the-stuff
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-       - uses: jwalton/gh-find-current-pr@v1
-         id: findPR
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPR
 
       - name: Make a temporary branch
         run: |
