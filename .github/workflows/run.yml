@@ -1,0 +1,42 @@
+name: test-run
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-the-stuff:
+    runs-on: ubuntu-latest
+    name: Build the artifact
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Make some artifact
+        run: |
+          echo "this is a test file" > test-file.txt
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: built thingy
+          path: test-file.txt
+
+  share:
+    runs-on: ubuntu-latest
+    name: Share the artifact
+    needs: run-the-stuff
+    steps:
+       - uses: jwalton/gh-find-current-pr@v1
+         id: findPR
+
+      - name: Make a temporary branch
+        run: |
+          echo "Your PR is ${{ steps.findPR.outputs.pr }}"
+          git checkout --orphan pr-${{ steps.findPR.outputs.pr }}
+          git rm --cached $(git ls-files)
+
+      - uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Add the very useful text file'
+          add: 'test-file.txt'
